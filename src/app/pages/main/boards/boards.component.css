@@ -1,0 +1,13 @@
+mat-card {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+mat-card:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+}
+
+.title-holder {
+  margin-top: 10px;
+}

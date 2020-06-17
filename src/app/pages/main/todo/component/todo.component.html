@@ -1,0 +1,104 @@
+<div cdkDropListGroup class="row" *ngIf="board">
+  <div class="col-md-4 col-sm-6">
+    <h2>To do</h2>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="board.content.todo"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div
+        class="example-box row-flex"
+        *ngFor="let item of board.content.todo"
+        cdkDrag
+        (click)="displayTask(item)"
+      >
+        {{ item.header }}
+        <div class="row-flex">
+          <mat-icon [class]="iconColor(item)">check_box</mat-icon>
+          {{ checkedUncheckeds(item) }}
+        </div>
+      </div>
+    </div>
+    <button
+      (click)="addTask(board.content.todo)"
+      color="primary"
+      class="w-100"
+      mat-stroked-button
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <div class="col-md-4 col-sm-6">
+    <div>
+      <h2>Doing</h2>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="board.content.doing"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div
+          class="example-box row-flex"
+          *ngFor="let item of board.content.doing"
+          cdkDrag
+          (click)="displayTask(item)"
+        >
+          {{ item.header }}
+          <div class="row-flex">
+            <mat-icon [class]="iconColor(item)">check_box</mat-icon>
+            {{ checkedUncheckeds(item) }}
+          </div>
+        </div>
+      </div>
+      <button
+        (click)="addTask(board.content.doing)"
+        color="primary"
+        class="w-100"
+        mat-stroked-button
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="col-md-4 col-sm-6">
+    <h2>Done</h2>
+
+    <div
+      cdkDropList
+      [cdkDropListData]="board.content.done"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <div
+        class="example-box row-flex"
+        *ngFor="let item of board.content.done"
+        cdkDrag
+        (click)="displayTask(item)"
+      >
+        {{ item.header }}
+        <div class="row-flex">
+          <mat-icon [class]="iconColor(item)">check_box</mat-icon>
+          {{ checkedUncheckeds(item) }}
+        </div>
+      </div>
+    </div>
+    <button
+      (click)="addTask(board.content.done)"
+      color="primary"
+      class="w-100"
+      mat-stroked-button
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <ng-template #taskDetails>
+    <app-task-details
+      [task]="displayedTask"
+      (onSave)="this.taskDetailsSaved()"
+    ></app-task-details>
+  </ng-template>
+</div>
