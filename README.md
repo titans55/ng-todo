@@ -1,3 +1,3 @@
 # Todo
 
-Firebase powered trello like realtime todo app
+Firebase powered trello-like realtime todo app
