@@ -1,9 +1,10 @@
+import { DocumentReference } from '@angular/fire/firestore/interfaces';
+
 export interface BoardInfo {
-  name: string;
-  boardDetailRef: any;
+  boardDetailRef: DocumentReference;
 }
 
-export interface User {
+export interface UserModel {
   boards: Array<BoardInfo>;
   uid: string;
   email: string;

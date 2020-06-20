@@ -1,7 +1,21 @@
 <div cdkDropListGroup class="row" *ngIf="board">
+  <div class="col-12 mt-3">
+    <button (click)="goBackToBoards()" color="primary" mat-stroked-button>
+      Go back to boards
+      <mat-icon>keyboard_return</mat-icon>
+    </button>
+  </div>
+  <div class="col-12 mt-3">
+    <mat-form-field appearance="fill">
+      <input
+        matInput
+        [ngModel]="board.boardName"
+        (ngModelChange)="this.renameBoard($event)"
+      />
+    </mat-form-field>
+  </div>
   <div class="col-md-4 col-sm-6">
     <h2>To do</h2>
-
     <div
       cdkDropList
       [cdkDropListData]="board.content.todo"

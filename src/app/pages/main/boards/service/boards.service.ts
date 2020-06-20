@@ -5,15 +5,12 @@ import {
 } from '@angular/fire/firestore';
 import { TodoService } from '../../todo/service/todo.service';
 import { Board } from '../../todo/model/task';
-import { User, BoardInfo } from 'src/app/pages/auth/model/user.model';
+import { UserModel, BoardInfo } from 'src/app/pages/auth/model/user.model';
 @Injectable({
   providedIn: 'root',
 })
 export class BoardsService {
-  constructor(
-    private afs: AngularFirestore,
-    private todoService: TodoService
-  ) {}
+  constructor(public afs: AngularFirestore, private todoService: TodoService) {}
 
   getBoardIds(userId: string): string[] {
     return [];
@@ -24,7 +21,7 @@ export class BoardsService {
     const boardDetailRef: AngularFirestoreDocument<Board> = this.afs.doc(
       `boards/` + boardId
     );
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(
+    const userRef: AngularFirestoreDocument<UserModel> = this.afs.doc(
       `users/` + userId
     );
     let newBoardDetails: Board = {
@@ -34,7 +31,6 @@ export class BoardsService {
 
     boardDetailRef.set(newBoardDetails, { merge: true });
     currentBoards.push({
-      name: newBoardDetails.boardName,
       boardDetailRef: boardDetailRef.ref,
     });
     userRef.update({

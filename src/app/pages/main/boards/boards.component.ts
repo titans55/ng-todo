@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardsService } from './service/boards.service';
 import { AuthService } from '../../auth/service/auth.service';
-import { User } from '../../auth/model/user.model';
+import { UserModel, BoardInfo } from '../../auth/model/user.model';
 import { Router } from '@angular/router';
+import { Board } from '../todo/model/task';
 
 @Component({
   selector: 'app-boards',
@@ -10,7 +11,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./boards.component.css'],
 })
 export class BoardsComponent implements OnInit {
-  user: User;
+  user: UserModel;
+  boards: Array<Board>;
 
   constructor(
     private boardsService: BoardsService,
@@ -19,6 +21,18 @@ export class BoardsComponent implements OnInit {
   ) {
     this.authService.user$.subscribe((user) => {
       this.user = user;
+      this.boards = [];
+      if (this.user) {
+        this.user.boards.forEach(async (board) => {
+          console.log(board.boardDetailRef.path);
+          await this.boardsService.afs
+            .doc(board.boardDetailRef.path)
+            .valueChanges()
+            .subscribe((board: Board) => {
+              this.boards.push(board);
+            });
+        });
+      }
     });
   }
 
@@ -30,5 +44,11 @@ export class BoardsComponent implements OnInit {
 
   addBoard(): void {
     this.boardsService.createNewBoard(this.user.boards, this.user.uid);
+  }
+
+  getBoardName(board: BoardInfo): Promise<string> {
+    return board.boardDetailRef.get().then((res) => {
+      return (<any>res).boardName;
+    });
   }
 }

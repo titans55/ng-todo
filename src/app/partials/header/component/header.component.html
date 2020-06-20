@@ -1,1 +1,10 @@
-<mat-toolbar color="primary">Realtime Todo</mat-toolbar>
+<mat-toolbar color="primary">
+  <span>Realtime Todo</span>
+  <span class="flex-spacer"></span>
+  <ng-container *ngIf="user">
+    <span class="mr-2">{{ user.displayName }}</span>
+    <button mat-button (click)="logout()">
+      Logout <mat-icon>exit_to_app</mat-icon>
+    </button>
+  </ng-container>
+</mat-toolbar>

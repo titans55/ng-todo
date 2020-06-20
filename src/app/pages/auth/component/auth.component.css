@@ -1,0 +1,14 @@
+.vertical-center {
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.center-button {
+  position: relative;
+  top: 40vh;
+  transform: translateY(-50%);
+  font-size: 4vh;
+  height: 7vh;
+  font-weight: 100;
+}

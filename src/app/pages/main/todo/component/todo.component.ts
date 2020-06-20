@@ -35,7 +35,8 @@ export class TodoComponent implements OnInit {
     private dialog: MatDialog,
     private todoService: TodoService,
     private afs: AngularFirestore,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.route.paramMap.subscribe((params) => {
       this.boardIdFromUrl = params.get('boardId');
@@ -123,6 +124,15 @@ export class TodoComponent implements OnInit {
   }
 
   private updateBoard() {
-    this.afs.doc(`boards/roU0eSufSc4WsHOzIh7g`).update(this.board);
+    this.afs.doc(`boards/` + this.boardIdFromUrl).update(this.board);
+  }
+
+  renameBoard(renamedBoard: string): void {
+    this.board.boardName = renamedBoard;
+    this.updateBoard();
+  }
+
+  goBackToBoards(): void {
+    this.router.navigateByUrl('/');
   }
 }

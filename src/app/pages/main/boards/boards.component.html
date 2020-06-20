@@ -2,10 +2,15 @@
   <h1>My boards</h1>
 </div>
 <div class="row text-center" *ngIf="user && user.boards">
-  <div class="col-md-4 col-sm-6" *ngFor="let board of user.boards">
-    <mat-card (click)="navigateToBoard(board.boardDetailRef)">{{
-      board.name
-    }}</mat-card>
+  <div
+    class="col-md-4 col-sm-6"
+    *ngFor="let board of user.boards; let i = index"
+  >
+    <mat-card
+      (click)="navigateToBoard(board.boardDetailRef)"
+      *ngIf="boards[i]"
+      >{{ boards[i].boardName }}</mat-card
+    >
   </div>
   <div class="col-md-4 col-sm-6">
     <button

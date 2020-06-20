@@ -6,7 +6,7 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/firestore';
 import { Observable, of } from 'rxjs';
-import { User } from '../model/user.model';
+import { UserModel } from '../model/user.model';
 import { switchMap } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -15,7 +15,7 @@ import 'firebase/auth';
   providedIn: 'root',
 })
 export class AuthService {
-  user$: Observable<User>;
+  user$: Observable<UserModel>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -25,7 +25,7 @@ export class AuthService {
     this.user$ = this.afAuth.authState.pipe(
       switchMap((user) => {
         if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+          return this.afs.doc<UserModel>(`users/${user.uid}`).valueChanges();
         } else {
           return of(null);
         }
@@ -46,16 +46,25 @@ export class AuthService {
     return this.router.navigate(['/landing']);
   }
 
-  private updateUserData(user) {
-    const usersDoc: AngularFirestoreDocument<User> = this.afs.doc(
+  private async updateUserData(user: firebase.User) {
+    const usersDoc: AngularFirestoreDocument<UserModel> = this.afs.doc(
       `users/${user.uid}`
     );
-    const data: User = {
-      boards: user.boards,
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-    };
-    return usersDoc.set(data, { merge: true });
+    let userExists: boolean = false;
+    await usersDoc
+      .get()
+      .toPromise()
+      .then((user) => {
+        userExists = user.exists;
+      });
+    if (!userExists) {
+      const data = {
+        boards: [],
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+      };
+      return usersDoc.set(data, { merge: true });
+    }
   }
 }
